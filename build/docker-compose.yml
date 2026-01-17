@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  ibo-phone-builder:
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    container_name: ibo-phone-builder
+    volumes:
+      - .:/ibo-phone-iso
+      - ./iso_output:/iso
+    working_dir: /ibo-phone-iso
+    stdin_open: true
+    tty: true
+    environment:
+      - ANDROID_SDK_ROOT=/opt/android-sdk
+      - JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+    command: /bin/bash
+
+  ibo-phone-vm:
+    image: ibo-phone:latest
+    container_name: ibo-phone-vm
+    ports:
+      - "5037:5037"  # ADB
+      - "8080:8080"  # Web Server
+    volumes:
+      - ./iso_output:/iso
+      - ./packages:/packages
+    environment:
+      - DISPLAY=:0
+    depends_on:
+      - ibo-phone-builder
+
+volumes:
+  iso_output:
+    driver: local
+  packages:
+    driver: local

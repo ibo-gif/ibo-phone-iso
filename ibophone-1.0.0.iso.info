@@ -1,0 +1,23 @@
+IBO Phone ISO Image
+═══════════════════════════════════
+
+Версия: 1.0.0
+Дата создания: Sat Jan 17 06:21:16 UTC 2026
+Размер: 
+
+Содержимое:
+  ✓ IBO App Store (магазин приложений)
+  ✓ IBO Browser (веб-браузер)
+  ✓ Linux Kernel 5.15.0+ (ARM64)
+  ✓ SELinux безопасность
+  ✓ APK и AAB поддержка
+
+Запуск на виртуальной машине:
+  QEMU: qemu-system-aarch64 -m 2048 -cdrom ibophone-1.0.0.iso
+  VirtualBox: VBoxManage createmedium --filename ibophone.iso --size 1000 && VirtualBox --startvm ibophone
+
+Требования:
+  - 2GB RAM
+  - 32GB дискового пространства
+  - ARM64 или x86_64 хост
+

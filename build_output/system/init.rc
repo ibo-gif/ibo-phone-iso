@@ -1,0 +1,55 @@
+# IBO Phone Init Script
+# Скрипт инициализации системы IBO Phone
+
+# Загрузка основных сервисов
+service bootanim /system/bin/bootanimation
+    class core
+    user graphics
+    group graphics audio
+
+# App Store сервис
+service appstore /system/app/ibo-appstore/AppStore
+    class main
+    user system
+    group system
+    disabled
+    oneshot
+
+# Browser сервис
+service browser /system/app/ibo-browser/Browser
+    class main
+    user system
+    group system
+    disabled
+    oneshot
+
+# Package Manager сервис
+service package_manager /system/bin/package_manager
+    class main
+    user system
+    group system
+
+# Сервис установки приложений
+service installer /system/bin/installer
+    class main
+    user system
+    group system
+
+# Запуск основных сервисов после загрузки
+on boot
+    # Инициализация файловой системы
+    mkdir /data/app 0755 system system
+    mkdir /data/app-lib 0755 system system
+    mkdir /cache/app 0755 system system
+    
+    # Запуск сервиса установки пакетов
+    start package_manager
+    
+    # Запуск сервиса инсталляции
+    start installer
+
+# Обработка сигнала запуска системы
+on property:sys.boot_completed=1
+    # Загрузка пользовательских приложений
+    setprop ro.boot.hardware iphone
+    setprop sys.usb.config adb
